@@ -3,6 +3,7 @@ const buttons = document.querySelectorAll('button');
 const playerScoreDisplay = document.querySelector('#player-score-display');
 const computerScoreDisplay = document.querySelector('#computer-score-display');
 const winner = document.querySelector('#winner');
+const computerChoiceDisplay = document.querySelector('h2');
 
 let playerScore = 0
 let computerScore = 0
@@ -15,6 +16,7 @@ function reset(){
     playerScoreDisplay.textContent = 0;
     computerScoreDisplay.textContent = 0;
     winner.textContent = '';
+    computerChoiceDisplay.textContent = '';
     disableButtons(false)
 }
 
@@ -44,6 +46,7 @@ function playRound(str){
     let result;
     let playerChoice = str.toLowerCase();
     let computerChoice = getComputerChoice();
+    computerChoiceDisplay.textContent = `Computer chooses: ${computerChoice}`;
     if(playerChoice === computerChoice){
         console.log('A draw, play again!');
         result = 'draw'
