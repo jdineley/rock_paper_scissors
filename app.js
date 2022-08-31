@@ -1,4 +1,4 @@
-
+// Just a nice title for the kicks
 function rockPaperScissors(){
     let options = ['rock', 'paper', 'scissors'];
     let random = Math.floor(Math.random()*options.length);
