@@ -1,22 +1,52 @@
+const play = document.querySelector('h1')
+const buttons = document.querySelectorAll('button');
+const playerScoreDisplay = document.querySelector('#player-score-display');
+const computerScoreDisplay = document.querySelector('#computer-score-display');
+const winner = document.querySelector('#winner');
 
-function rockPaperScissors(){
+let playerScore = 0
+let computerScore = 0
+
+disableButtons(true)
+
+function reset(){
+    playerScore = 0;
+    computerScore = 0;
+    playerScoreDisplay.textContent = 0;
+    computerScoreDisplay.textContent = 0;
+    winner.textContent = '';
+    disableButtons(false)
+}
+
+play.addEventListener('click', reset)
+
+buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        let id = e.target.getAttribute('id');
+        playerChoice = id;
+        playRound(id);
+    })
+})
+
+function getComputerChoice(){
     let options = ['rock', 'paper', 'scissors'];
     let random = Math.floor(Math.random()*options.length);
-    console.log(random);
     return options[random];
 }
 
-function getComputerChoice(){
-    return rockPaperScissors();
+function disableButtons(bool){
+    buttons.forEach((button) => {
+        button.disabled = bool;
+    })
 }
 
-
-function playRound(getComputerChoice, str){
+function playRound(str){
+    let result;
     let playerChoice = str.toLowerCase();
     let computerChoice = getComputerChoice();
     if(playerChoice === computerChoice){
         console.log('A draw, play again!');
-        return 'draw'
+        result = 'draw'
 
     } else {
         let gameArrayString = `${playerChoice} ${computerChoice}`
@@ -27,39 +57,32 @@ function playRound(getComputerChoice, str){
             case 'paper rock':
             case 'rock scissors':
                 console.log(`Player choice: ${playerChoice}, Computer choice: ${computerChoice}: Player wins!!`)
-                return 'player wins'
+                result = 'player wins'
             break;
             default:
                 console.log(`Player choice: ${playerChoice}, Computer choice: ${computerChoice}: Computer wins!!`)
-                return 'computer wins'
+                result = 'computer wins'
         }
     }
-
-}
-
-
-function game() {
-    let curGame = {
-        player: 0,
-        computer: 0
+    switch(result) {
+        case 'draw':
+            break;
+        case 'player wins':
+            playerScore += 1
+            break;
+        case 'computer wins':
+            computerScore += 1
+            break;
     }
-    while(curGame.player < 3 && curGame.computer < 3) {
-        let playerChoice = prompt('Make your choice now!')
-        switch(playRound(getComputerChoice, playerChoice)) {
-            case 'draw':
-                break;
-            case 'player wins':
-                curGame.player += 1
-                break;
-            case 'computer wins':
-                curGame.computer += 1
-                break;
-        }
-        console.log(curGame);     
-    }
-    if(curGame.player === 3){
-        console.log(`Player wins game!!  Final score: Player - ${curGame.player},  Computer - ${curGame.computer}`)
-    } else {
-        console.log(`Computer wins game!!  Final score: Computer - ${curGame.computer},  Player - ${curGame.player}`)
+    playerScoreDisplay.textContent = playerScore;
+    computerScoreDisplay.textContent = computerScore;
+    if(playerScore === 3){
+        console.log(`Player wins game!!  Final score: Player - ${playerScore},  Computer - ${computerScore}`)
+        winner.textContent = 'You win!'
+        disableButtons(true)
+    } else if (computerScore === 3) {
+        console.log(`Computer wins game!!  Final score: Computer - ${computerScore},  Player - ${playerScore}`)
+        winner.textContent = 'Computer wins!'
+        disableButtons(true)
     }
 }
